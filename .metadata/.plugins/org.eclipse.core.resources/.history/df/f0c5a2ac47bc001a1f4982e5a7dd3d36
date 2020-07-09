@@ -1,0 +1,94 @@
+package local.BotInc.GameRace;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Peringkat {
+
+    private int posisi = 0;
+
+    public synchronized void getPosisi(String player, OnFinishedListener listener) {
+        posisi++;
+        listener.onFinished("Position-" + posisi + " " + player, posisi);
+    }
+}
+
+interface OnFinishedListener {
+
+    abstract void onFinished(String player, Integer posisi);
+}
+
+public class RacingGames extends Thread implements Runnable {
+
+    private String player;
+    private Peringkat p;
+    private OnFinishedListener listener;
+
+    public RacingGames(String player, Peringkat p, OnFinishedListener listener) {
+        this.player = player;
+        this.p = p;
+        this.listener = listener;
+    }
+
+    @Override
+    public void run() {
+        p.getPosisi(player, listener);
+    }
+
+    public static void main(String[] args) {
+        int totalPlayer = 0;
+        List<String> playerNames = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("=== Racing Game Multiplayer ===");
+        System.out.print("Press P to play or E to Exit : ");
+        String play = sc.nextLine();
+
+        if ("p".equalsIgnoreCase(play)) {
+            System.out.print("How many players : ");
+            totalPlayer = Integer.valueOf(sc.nextLine());
+            int count = 1;
+            for (int i = 0; i < totalPlayer; i++) {
+                System.out.print("Input player " + count + " : ");
+                String playerName = sc.nextLine();
+                playerNames.add(playerName);
+                count++;
+            }
+
+            System.out.println("Players ready..");
+            System.out.print("Press S to start or E to Exit : ");
+            String start = sc.nextLine();
+            if ("s".equalsIgnoreCase(start)) {
+                Peringkat p = new Peringkat();
+                System.out.println("Game ready in 3 seconds");
+                for (int i = 3; i > 1; i--) {
+                    try {
+                        System.out.println(i);
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+
+                    }
+                }
+                System.out.println(1);
+                System.out.println("Game started...");
+                final int total = totalPlayer;
+                for (int i = 0; i < totalPlayer; i++) {
+                    RacingGames ts = new RacingGames(playerNames.get(i), p, (val, pos) -> {
+                        System.out.println(val);
+                        if (pos == total) {
+                            System.out.println("Game finished...");
+                        }
+                    });
+                    ts.start();
+                }
+            } else {
+                System.out.println("== Thanks ==");
+                System.exit(0);
+            }
+        } else {
+            System.out.println("== Thanks ==");
+            System.exit(0);
+        }
+    }
+}

@@ -1,0 +1,19 @@
+//package local.BotInc.GameRace;
+//
+//public class GameIncrement extends Thread {
+//
+//	private String huruf;
+//	private Counter c;
+//
+//	public GameIncrement(String huruf, Counter c) {
+//		this.huruf = huruf;
+//		this.c = c;
+//	}
+//
+//	@Override
+//	public void run() {
+//		synchronized (c) {
+//			System.out.println("Position - " + this.c.increment() + " " + huruf);
+//		}
+//	}
+//}

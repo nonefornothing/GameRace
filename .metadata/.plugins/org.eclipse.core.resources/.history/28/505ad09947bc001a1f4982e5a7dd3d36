@@ -1,0 +1,54 @@
+package local.BotInc.GameRace;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class GameRace {
+	static ArrayList<String> sm = new ArrayList<>();
+	public static Scanner scan = new Scanner(System.in);
+	public static String input;
+	public static int input1;
+	public static int count;
+
+	public static void main(String[] args) throws Exception {
+		Counter c = new Counter();
+		System.out.println("======Racing Game Multiplayer=====");
+		System.out.println("Press P to Start or E to Exit");
+		input = scan.nextLine();
+		if (input.equalsIgnoreCase("P")) {
+			System.out.println("How many players: ");
+			input1 = scan.nextInt();
+			scan.nextLine();
+			for (int i = 1; i <= input1; i++) {
+				System.out.println("Input player" + i + ":");
+				input = scan.nextLine();
+				sm.add(input);
+			}
+			System.out.println("Players ready...");
+			System.out.println("Press S to Start or E to Exit: ");
+			input = scan.nextLine();
+			if (input.equalsIgnoreCase("S")) {
+				System.out.println("Game Ready in 3 Seconds");
+				for (int j = 3; j > 0; j--) {
+					Game mulai = new Game(j);
+					mulai.start();
+					Thread.sleep(1000);
+				}
+				System.out.println("Game started...");
+				for (int i = 0; i < sm.size(); i++) {
+					GameIncrement play = new GameIncrement(sm.get(i), c);
+					play.start();
+				}
+				
+			} else {
+				System.exit(0);
+			}
+			
+		} else {
+			System.exit(0);
+		}
+		
+	}
+
+	
+}

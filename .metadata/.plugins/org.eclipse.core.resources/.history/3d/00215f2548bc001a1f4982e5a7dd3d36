@@ -1,0 +1,20 @@
+package local.BotInc.GameRace;
+
+public class Game extends Thread {
+private int jalan;
+	
+	public Game(int jalan ) {
+		this.jalan = jalan;
+	}
+	
+	@Override
+	public void run() {
+		System.out.println(jalan);
+		try {
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}
